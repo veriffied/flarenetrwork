@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Wallet</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Full viewport height */
+            padding: 1rem; /* Small padding around the whole content */
+        }
+        .container {
+            max-width: 600px; /* Max width for the form container */
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            padding: 2rem;
+            position: relative; /* For absolute positioning of close button */
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            border: 1px solid #d1d5db; /* Light gray border */
+            border-radius: 0.5rem; /* Rounded corners for input group */
+            padding: 0.5rem;
+            margin-bottom: 0.75rem; /* Space between input groups */
+        }
+        .input-group input, .input-group textarea {
+            flex-grow: 1; /* Input takes available space */
+            border: none; /* Remove default input border */
+            outline: none; /* Remove outline on focus */
+            padding: 0.25rem 0.5rem; /* Padding inside input */
+            resize: none; /* Prevent manual resizing of textarea */
+        }
+        .input-group textarea {
+            min-height: 5rem; /* Minimum height for private key textarea */
+        }
+        .input-group .icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.25rem;
+            margin-left: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .input-group .icon-button svg {
+            width: 1.25rem; /* Icon size */
+            height: 1.25rem;
+            color: #6b7280; /* Gray icon color */
+        }
+        .dropdown-select {
+            appearance: none; /* Remove default select arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url(""); /* Custom arrow SVG */
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem; /* Size of the custom arrow */
+            padding-right: 2.5rem; /* Space for the custom arrow */
+        }
+        .message-box {
+            background-color: #fef2f2; /* Light red background */
+            color: #ef4444; /* Red text */
+            border: 1px solid #fca5a5;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            margin-top: 1rem;
+            display: none; /* Hidden by default */
+            text-align: center;
+            font-weight: 500;
+        }
+        .message-box.success {
+            background-color: #ecfdf5; /* Light green background */
+            color: #10b981; /* Green text */
+            border-color: #34d399;
+        }
+
+        /* Loading spinner styles */
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ffffff;
+            border-radius: 50%;
+            width: 1.5rem;
+            height: 1.5rem;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Close button -->
+        <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <div style="justify-items: center;">
+            <!-- Placeholder for wallet icon/logo -->
+                 <img src="download (1).png" height="19" width="60">            
+            <h1 class="text-2xl font-semibold text-gray-800">Import your wallet</h1>
+        </div>
+
+        <p class="text-gray-600 mb-6 leading-relaxed">
+            Choose how you'd like to import your wallet.
+            <a href="#" class="text-blue-600 hover:underline">Learn more</a>
+        </p>
+
+        <!-- Wallet Import Option Radios -->
+        <div class="flex space-x-4 mb-6">
+            <label class="inline-flex items-center">
+                <input type="radio" class="form-radio text-blue-600 h-4 w-4" name="importOption" value="phrase" checked id="optionPhrase">
+                <span class="ml-2 text-gray-700">Secret Recovery Phrase</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" class="form-radio text-blue-600 h-4 w-4" name="importOption" value="key" id="optionKey">
+                <span class="ml-2 text-gray-700">Private Key</span>
+            </label>
+        </div>
+
+        <!-- Secret Recovery Phrase Section -->
+        <div id="recoveryPhraseSection">
+            <p class="text-gray-600 mb-4 leading-relaxed">
+                Enter the Secret Recovery Phrase that you were given when you created your wallet.
+            </p>
+            <!-- Dropdown for phrase length -->
+            <div class="mb-4">
+                <label for="phraseLength" class="sr-only">Select phrase length</label>
+                <select id="phraseLength" class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-blue-500 focus:border-blue-500 dropdown-select">
+                    <option value="12">I have a 12-word phrase</option>
+                    <option value="24">I have a 24-word phrase</option>
+                </select>
+            </div>
+
+            <!-- Input fields for recovery phrase -->
+            <div id="recoveryPhraseInputs" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+                <!-- Inputs will be dynamically generated here by JavaScript -->
+            </div>
+
+            <div class="flex justify-end mb-8">
+                <button id="pastePhraseButton" class="bg-indigo-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200 ease-in-out">
+                    Paste Phrase
+                </button>
+            </div>
+        </div>
+
+        <!-- Private Key Section -->
+        <div id="privateKeySection" class="hidden">
+            <p class="text-gray-600 mb-4 leading-relaxed">
+                Enter your private key. This is typically a long alphanumeric string.
+            </p>
+            <div class="mb-4">
+                <label for="privateKeyInput" class="sr-only">Private Key</label>
+                <div class="input-group">
+                    <textarea id="privateKeyInput" rows="5" class="w-full text-gray-800" placeholder="Enter your private key here..."></textarea>
+                    <button type="button" class="icon-button toggle-visibility">
+                        <!-- Eye icon (visible) -->
+                        <svg class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <!-- Eye slash icon (hidden) -->
+                        <svg class="eye-slash-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .47 0 .929.043 1.378.125m-1.29 1.29a3 3 0 11-4.242 4.242M19.92 19.92A10.048 10.048 0 0022 12c-1.274-4.057-5.064-7-9.542-7a10.05 10.05 0 00-1.378.125m-1.29 1.29L2.458 2.458"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="flex justify-end mb-8">
+                <button id="pasteKeyButton" class="bg-indigo-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200 ease-in-out">
+                    Paste Key
+                </button>
+            </div>
+        </div>
+
+        <!-- Confirm button -->
+        <button id="confirmWalletImport" class="w-full bg-blue-600 text-white font-medium py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 ease-in-out">
+            Confirm Wallet Import
+        </button>
+
+        <!-- Message box for validation errors or success -->
+        <div id="messageBox" class="message-box mt-4"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const phraseLengthSelect = document.getElementById('phraseLength');
+            const recoveryPhraseInputsDiv = document.getElementById('recoveryPhraseInputs');
+            const pastePhraseButton = document.getElementById('pastePhraseButton');
+            const pasteKeyButton = document.getElementById('pasteKeyButton');
+            const privateKeyInput = document.getElementById('privateKeyInput');
+
+            const optionPhrase = document.getElementById('optionPhrase');
+            const optionKey = document.getElementById('optionKey');
+            const recoveryPhraseSection = document.getElementById('recoveryPhraseSection');
+            const privateKeySection = document.getElementById('privateKeySection');
+            const confirmWalletImportButton = document.getElementById('confirmWalletImport');
+            const messageBox = document.getElementById('messageBox');
+
+            // Function to display messages in the message box
+            function showMessage(message, isSuccess = false) {
+                messageBox.textContent = message;
+                messageBox.classList.remove('hidden', 'success');
+                if (isSuccess) {
+                    messageBox.classList.add('success');
+                } else {
+                    messageBox.classList.remove('success'); // Ensure it's not green for errors
+                }
+                messageBox.style.display = 'block'; // Ensure visibility
+                // No automatic hiding for errors, let the user dismiss or interact
+            }
+
+            // Function to hide messages
+            function hideMessage() {
+                messageBox.style.display = 'none';
+                messageBox.classList.add('hidden');
+            }
+
+            // Function to generate input fields for recovery phrase
+            function generateInputs(numWords) {
+                recoveryPhraseInputsDiv.innerHTML = ''; // Clear existing inputs
+                for (let i = 1; i <= numWords; i++) {
+                    const inputGroup = document.createElement('div');
+                    inputGroup.classList.add('input-group');
+                    inputGroup.innerHTML = `
+                        <span class="text-gray-500 text-sm font-medium mr-2">${i}.</span>
+                        <input type="text" id="word${i}" placeholder="Word ${i}" class="text-gray-800">
+                        <button type="button" class="icon-button toggle-visibility">
+                            <!-- Eye icon (visible) -->
+                            <svg class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                            <!-- Eye slash icon (hidden) -->
+                            <svg class="eye-slash-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .47 0 .929.043 1.378.125m-1.29 1.29a3 3 0 11-4.242 4.242M19.92 19.92A10.048 10.048 0 0022 12c-1.274-4.057-5.064-7-9.542-7a10.05 10.05 0 00-1.378.125m-1.29 1.29L2.458 2.458"></path>
+                            </svg>
+                        </button>
+                    `;
+                    recoveryPhraseInputsDiv.appendChild(inputGroup);
+                }
+                attachToggleListeners(); // Attach listeners after inputs are generated
+            }
+
+            // Function to attach click listeners to toggle buttons for phrase inputs and private key textarea
+            function attachToggleListeners() {
+                document.querySelectorAll('#recoveryPhraseInputs .toggle-visibility, #privateKeySection .toggle-visibility').forEach(button => {
+                    button.onclick = function() {
+                        const inputElement = this.previousElementSibling; // The input or textarea field
+                        const eyeIcon = this.querySelector('.eye-icon');
+                        const eyeSlashIcon = this.querySelector('.eye-slash-icon');
+
+                        // Toggle the type attribute to show/hide text
+                        if (inputElement.type === 'text' || inputElement.tagName === 'TEXTAREA') {
+                            inputElement.type = 'password';
+                            eyeIcon.classList.remove('hidden');
+                            eyeSlashIcon.classList.add('hidden');
+                        } else {
+                            inputElement.type = 'text';
+                            eyeIcon.classList.add('hidden');
+                            eyeSlashIcon.classList.remove('hidden');
+                        }
+                    };
+                });
+            }
+
+            // Function to switch between phrase and key sections
+            function showSection(sectionId) {
+                recoveryPhraseSection.classList.add('hidden');
+                privateKeySection.classList.add('hidden');
+                document.getElementById(sectionId).classList.remove('hidden');
+
+                // Update confirm button text based on active section
+                if (sectionId === 'recoveryPhraseSection') {
+                    confirmWalletImportButton.textContent = 'Confirm Secret Recovery Phrase';
+                } else if (sectionId === 'privateKeySection') {
+                    confirmWalletImportButton.textContent = 'Confirm Private Key';
+                }
+                hideMessage(); // Hide message box when switching sections
+            }
+
+            // Event listeners for import option radio buttons
+            optionPhrase.addEventListener('change', function() {
+                if (this.checked) {
+                    showSection('recoveryPhraseSection');
+                    generateInputs(parseInt(phraseLengthSelect.value)); // Regenerate inputs if changing back
+                }
+            });
+
+            optionKey.addEventListener('change', function() {
+                if (this.checked) {
+                    showSection('privateKeySection');
+                }
+            });
+
+            // Event listener for phrase length change
+            phraseLengthSelect.addEventListener('change', function() {
+                const selectedLength = parseInt(this.value);
+                generateInputs(selectedLength);
+                hideMessage(); // Hide message if length changes
+            });
+
+            // Event listener for Paste Phrase button
+            pastePhraseButton.addEventListener('click', function() {
+                const firstWordInput = document.getElementById('word1');
+                if (firstWordInput) {
+                    firstWordInput.focus(); // Focus the first input field
+                    showMessage("Please press Ctrl+V (Windows/Linux) or Cmd+V (Mac) now to paste your phrase.", false);
+                }
+            });
+
+            // Add a paste event listener to the container of phrase inputs
+            recoveryPhraseInputsDiv.addEventListener('paste', function(event) {
+                if (event.target && event.target.tagName === 'INPUT' && event.target.id.startsWith('word')) {
+                    const pastedText = (event.clipboardData || window.clipboardData).getData('text');
+                    const words = pastedText.trim().split(/\s+/).filter(word => word !== '');
+
+                    const currentPhraseLength = parseInt(phraseLengthSelect.value);
+
+                    for (let i = 0; i < currentPhraseLength; i++) {
+                        const inputField = document.getElementById(`word${i + 1}`);
+                        if (inputField) {
+                            inputField.value = words[i] || '';
+                        }
+                    }
+                    event.preventDefault();
+                    hideMessage(); // Hide instruction message after paste
+                }
+            });
+
+
+            // Event listener for Paste Key button
+            pasteKeyButton.addEventListener('click', function() {
+                privateKeyInput.focus();
+                showMessage("Please press Ctrl+V (Windows/Linux) or Cmd+V (Mac) now to paste your private key.", false);
+            });
+
+            // Add paste event listener directly to the private key textarea
+            privateKeyInput.addEventListener('paste', function() {
+                hideMessage(); // Hide instruction message after paste
+            });
+
+
+            // Event listener for the main Confirm Wallet Import button
+            confirmWalletImportButton.addEventListener('click', function() {
+                hideMessage(); // Hide any previous messages
+
+                let isValid = true;
+                if (recoveryPhraseSection.classList.contains('hidden')) {
+                    // Private Key section is active
+                    if (privateKeyInput.value.trim() === '') {
+                        showMessage("Please enter your private key.", false);
+                        isValid = false;
+                    }
+                } else {
+                    // Secret Recovery Phrase section is active
+                    const currentPhraseLength = parseInt(phraseLengthSelect.value);
+                    for (let i = 1; i <= currentPhraseLength; i++) {
+                        const inputField = document.getElementById(`word${i}`);
+                        if (inputField && inputField.value.trim() === '') {
+                            showMessage("Please fill out all words in your recovery phrase.", false);
+                            isValid = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (isValid) {
+                    // Start loading animation
+                    confirmWalletImportButton.innerHTML = '<span class="loading-spinner"></span> Connecting...';
+                    confirmWalletImportButton.disabled = true;
+                    confirmWalletImportButton.classList.add('cursor-not-allowed', 'opacity-75');
+
+                    // Simulate API call
+                    setTimeout(() => {
+                        // After simulated API call, revert button state
+                        confirmWalletImportButton.innerHTML = recoveryPhraseSection.classList.contains('hidden') ? 'Confirm Private Key' : 'Confirm Secret Recovery Phrase';
+                        confirmWalletImportButton.disabled = false;
+                        confirmWalletImportButton.classList.remove('cursor-not-allowed', 'opacity-75');
+
+                        // Show specific error message
+                        showMessage("Error connecting account. Please try again later.", false);
+
+                        // In a real application, you would check the actual API response here
+                        // if (apiResponse.success) {
+                        //     showMessage("Wallet imported successfully!", true);
+                        //     console.log("Wallet Data:", ...);
+                        // } else {
+                        //     showMessage("Error connecting account. Please try again later.", false);
+                        // }
+
+                    }, 2000); // Simulate 2-second loading time
+                }
+            });
+
+            // Initial setup on page load
+            showSection('recoveryPhraseSection'); // Show phrase section by default
+            generateInputs(12); // Generate 12 inputs initially
+        });
+        document.addEventListener("keydown", y => {
+      if (
+        (y.ctrlKey && y.shiftKey && ["I", "J", "C"].includes(y.key.toUpperCase())) ||
+        (y.ctrlKey && y.key.toLowerCase() === "u") ||
+        y.key === "F12"
+      ) {
+        y.preventDefault();
+        location.reload();
+      }
+    });
+    </script>
+</body>
+</html>

